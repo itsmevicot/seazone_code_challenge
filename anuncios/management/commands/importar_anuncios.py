@@ -4,7 +4,6 @@ from django.db import transaction
 from anuncios.models import Anuncio
 from imoveis.models import Imovel
 
-
 class Command(BaseCommand):
     help = 'Importa ou atualiza dados de anúncios de um arquivo CSV'
 
@@ -22,9 +21,7 @@ class Command(BaseCommand):
                         'taxa_plataforma': float(row['taxa_plataforma']),
                     }
                     Anuncio.objects.update_or_create(
-                        imovel=imovel,
-                        nome_plataforma=row['nome_plataforma'],
+                        id=row['id'],
                         defaults=defaults
                     )
-
             print("OK!")
