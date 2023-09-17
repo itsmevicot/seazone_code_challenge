@@ -62,7 +62,6 @@ class ReservaList(generics.ListCreateAPIView):
 
         return queryset
 
-
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter('anuncio', openapi.IN_QUERY,

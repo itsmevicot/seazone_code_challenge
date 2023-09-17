@@ -47,6 +47,7 @@ class AnuncioList(generics.ListCreateAPIView):
     def get(self, request, *args, **kwargs):
         return super(AnuncioList, self).list(request, *args, **kwargs)
 
+
 class AnuncioDetail(generics.RetrieveUpdateAPIView):
     queryset = Anuncio.objects.all()
     serializer_class = AnuncioSerializer
