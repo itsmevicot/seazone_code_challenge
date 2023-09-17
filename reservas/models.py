@@ -6,8 +6,8 @@ from base.custom_fields import CodigoField
 class Reserva(BaseModel):
     codigo_reserva = CodigoField(prefix='RES-', primary_key=True, editable=False)
     anuncio = models.ForeignKey('anuncios.Anuncio', on_delete=models.PROTECT, related_name='reservas')
-    data_checkin = models.DateTimeField()
-    data_checkout = models.DateTimeField()
+    data_checkin = models.DateField()
+    data_checkout = models.DateField()
     preco_total = models.FloatField()
     comentario = models.CharField(max_length=500, blank=True)
     numero_hospedes = models.IntegerField()
