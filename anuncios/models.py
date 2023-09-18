@@ -9,7 +9,7 @@ class Anuncio(BaseModel):
 
     @property
     def descricao(self):
-        return f"{self.imovel.codigo_imovel} - {self.nome_plataforma}"
+        return f"{self.nome_plataforma} - {self.imovel.codigo_imovel}"
 
     def __str__(self):
         return self.descricao
