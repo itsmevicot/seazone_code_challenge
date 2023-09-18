@@ -2,18 +2,23 @@
 
 from django.db import migrations
 from django.core.management import call_command
+from seazone import settings
 
 
 def carregar_fixtures(apps, schema_editor):
-    call_command('importar_imoveis')
-    call_command('importar_anuncios')
-    call_command('importar_reservas')
+    if not settings.TESTING:
+        call_command('importar_imoveis')
+        call_command('importar_anuncios')
+        call_command('importar_reservas')
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
         ('base', '0002_delete_basemodel'),
+        ('reservas', '0003_alter_reserva_data_checkin_and_more'),
+        ('anuncios', '0002_alter_anuncio_unique_together'),
+        ('imoveis', '0003_alter_imovel_data_ativacao'),
     ]
 
     operations = [
