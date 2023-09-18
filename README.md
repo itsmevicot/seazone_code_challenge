@@ -1,7 +1,8 @@
 # Seazone API
 
 ## Descrição
-Projeto desenvolvido para o desafio técnico da Seazone. A API desenvolvida é capaz de realizar as seguintes operações:
+Projeto desenvolvido para o desafio técnico da Seazone. Você pode visualizar o Diagrama Entidade-Relacionamento (DER) [aqui](der.png). 
+A API desenvolvida é capaz de realizar as seguintes operações:
 
 ### Imóveis
 #### - Criação de imóveis
@@ -22,7 +23,6 @@ Projeto desenvolvido para o desafio técnico da Seazone. A API desenvolvida é c
 #### - Busca de reservas por ID
 #### - Deleção de reservas
 
-Você pode visualizar o Diagrama Entidade-Relacionamento (DER) [aqui](der.png).
 
 ## Configuração do projeto
 
