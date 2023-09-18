@@ -26,23 +26,23 @@ class ImovelList(generics.ListCreateAPIView):
         data_ativacao = self.request.query_params.get('data_ativacao')
 
         if limite_hospedes:
-            queryset = queryset.filter(limite_hospedes__gte=limite_hospedes)
+            queryset = queryset.filter(limite_hospedes__gte=limite_hospedes).order_by('limite_hospedes')
 
         if quantidade_banheiros:
-            queryset = queryset.filter(quantidade_banheiros__gte=quantidade_banheiros)
+            queryset = queryset.filter(quantidade_banheiros__gte=quantidade_banheiros).order_by('quantidade_banheiros')
 
         if aceita_animal_estimacao:
             queryset = queryset.filter(aceita_animal_estimacao=aceita_animal_estimacao.lower() in ['true', '1'])
 
         if valor_limpeza:
-            queryset = queryset.filter(valor_limpeza__lte=valor_limpeza)
+            queryset = queryset.filter(valor_limpeza__lte=valor_limpeza).order_by('valor_limpeza')
 
         if data_ativacao:
             try:
                 data_formatada = datetime.strptime(data_ativacao, '%d/%m/%Y').date()
-                queryset = queryset.filter(data_ativacao=data_formatada)
+                queryset = queryset.filter(data_ativacao=data_formatada).order_by('data_ativacao')
             except ValueError:
-                raise ValidationError('Data de Ativação inválida. O formato deve ser DD/MM/YYYY (ex: 12/03/2023)')
+                raise ValidationError('Data de ativação inválida. O formato deve ser DD/MM/YYYY (ex: 12/03/2023)')
 
         return queryset
 
@@ -63,7 +63,6 @@ class ImovelList(generics.ListCreateAPIView):
             openapi.Parameter('valor_limpeza', openapi.IN_QUERY,
                               description="Valor da limpeza. Filtra por valores menores ou iguais ao informado.",
                               type=openapi.TYPE_NUMBER,
-                              format=openapi.FORMAT_FLOAT,
                               required=False,
                               example=55.38),
             openapi.Parameter('data_ativacao', openapi.IN_QUERY,
