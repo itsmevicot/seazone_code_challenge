@@ -1,9 +1,17 @@
 from django.db import models
+from base.manager import AtivoManager
 
 
 class BaseModel(models.Model):
-    criado_em = models.DateTimeField(auto_now_add=True)
-    atualizado_em = models.DateTimeField(auto_now=True)
+    objects = AtivoManager()
+
+    criado_em = models.DateTimeField(auto_now_add=True, editable=False)
+    atualizado_em = models.DateTimeField(auto_now=True, editable=False)
+    ativo = models.BooleanField(default=True)
 
     class Meta:
         abstract = True
+
+    def delete(self):
+        self.ativo = False
+        self.save()
