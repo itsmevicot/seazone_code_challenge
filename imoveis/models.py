@@ -4,12 +4,6 @@ from base.custom_fields import CodigoField
 
 
 class Imovel(BaseModel):
-
-    SIM_NAO_CHOICES = (
-        (True, 'Sim'),
-        (False, 'Não'),
-    )
-
     codigo_imovel = CodigoField(prefix='IMO-', primary_key=True, editable=False)
     limite_hospedes = models.IntegerField(default=1)
     quantidade_banheiros = models.IntegerField(default=0)
