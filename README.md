@@ -30,6 +30,8 @@ Você pode visualizar o Diagrama Entidade-Relacionamento (DER) [aqui](der.png).
 - Python 3.9
 - Django 4.2.5 e Django REST Framework 3.14.0
 - Banco de dados PostgreSQL 16.0
+- Swagger
+- Docker (opcional)
 
 ### Passos para execução
 
@@ -38,13 +40,13 @@ Você pode visualizar o Diagrama Entidade-Relacionamento (DER) [aqui](der.png).
 2. Crie um ambiente virtual:
 > python -m venv venv
 
-3. Entre no ambiente:
+3. Entre no ambiente (Windows):
 > venv\Scripts\activate
 
 4. Instale as dependências do projeto:
 > pip install -r requirements.txt
 
-5.  Configure o banco de dados do projeto:  
+5. Configure o banco de dados do projeto:  
 
 * Nessa etapa, vá até a [raiz do projeto Django](seazone) e localize o arquivo [local_settings_sample.py](seazone/local_settings_sample.py). Utilize-o como base para configurar seu banco PostgreSQL ou verifique as outras opções disponíveis na [documentação do Django](https://docs.djangoproject.com/en/4.2/ref/databases/).
 * ATENÇÃO: caso opte por algum outro banco de dados, talvez seja necessário realizar a instalação de outros pacotes.
@@ -80,4 +82,37 @@ O projeto inclui um docker-compose.yml, tornando mais prática a inicialização
 Certifique-se de que o arquivo .env esteja configurado corretamente antes de iniciar o container, pois ele informará ao docker-compose as variáveis a serem utilizadas.
 
 ### Testes
-TBA.
+São feitos testes unitários utilizando a biblioteca de testes do Django REST Framework. Cada entidade tem seus respectivos testes:
+
+#### Imóveis
+* Teste de criação
+* Teste de listagem
+* Teste de busca por ID
+* Teste de update
+* Teste de deleção
+
+
+#### Anúncios
+* Teste de criação
+* Teste de listagem (com filtros)
+* Teste de busca por ID
+* Teste de update
+* Teste para saber se o método de deleção está como não permitido
+
+
+#### Reservas
+* Teste de criação
+* Teste de listagem
+* Teste de busca por ID
+* Teste de deleção
+* Teste do intervalo de datas (check-in e check-out)
+* Teste para saber se o método de update está como não permitido
+
+Para executar os testes de forma individual (Imoveis, Anuncios ou Reservas), basta utilizar o seguinte comando:
+> python manage.py test <nome_do_app>
+
+Exemplo:
+> python manage.py test imoveis
+
+Para executar todos os testes, utilize:
+> python manage.py test
