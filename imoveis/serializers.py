@@ -2,7 +2,7 @@ from rest_framework import serializers
 from imoveis.models import Imovel
 
 
-class SimNaoChoices(serializers.BooleanField):
+class SimNaoSerializer(serializers.BooleanField):
     def to_representation(self, value):
         return 'Sim' if value else 'Não'
 
@@ -12,10 +12,10 @@ class SimNaoChoices(serializers.BooleanField):
         elif data == 'Não':
             return False
         else:
-            return super(SimNaoChoices, self).to_internal_value(data)
+            return super(SimNaoSerializer, self).to_internal_value(data)
 
 class ImovelSerializer(serializers.ModelSerializer):
-    aceita_animal_estimacao = SimNaoChoices()
+    aceita_animal_estimacao = SimNaoSerializer()
 
     class Meta:
         model = Imovel
