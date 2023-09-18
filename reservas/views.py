@@ -1,19 +1,24 @@
 from django.db.models import Q
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
+
 from reservas.models import Reserva
 from reservas.serializers import ReservaSerializer
 from datetime import datetime
 
 
 class ReservaList(generics.ListCreateAPIView):
+    """
+    Endpoint para listar e criar reservas.
+    """
     model = Reserva
     serializer_class = ReservaSerializer
 
     def get_queryset(self):
-        queryset = Reserva.objects.all()
+        queryset = Reserva.objects.ativos()
 
         anuncio = self.request.query_params.get('anuncio')
         data_checkin = self.request.query_params.get('data_checkin')
@@ -97,9 +102,15 @@ class ReservaList(generics.ListCreateAPIView):
         ]
     )
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        response = super(ReservaList, self).list(request, *args, **kwargs)
+        if not response.data:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return response
 
 
 class ReservaDetail(generics.RetrieveDestroyAPIView):
-    queryset = Reserva.objects.all()
+    """
+    Endpoint para recuperar e deletar reservas.
+    """
+    queryset = Reserva.objects.ativos()
     serializer_class = ReservaSerializer

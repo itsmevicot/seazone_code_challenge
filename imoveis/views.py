@@ -1,18 +1,23 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
+
 from .models import Imovel
 from .serializers import ImovelSerializer
 from datetime import datetime
 
 
 class ImovelList(generics.ListCreateAPIView):
+    """
+    Endpoint para listar e criar imóveis.
+    """
     model = Imovel
     serializer_class = ImovelSerializer
 
     def get_queryset(self):
-        queryset = Imovel.objects.all()
+        queryset = Imovel.objects.ativos()
 
         limite_hospedes = self.request.query_params.get('limite_hospedes')
         quantidade_banheiros = self.request.query_params.get('quantidade_banheiros')
@@ -69,9 +74,15 @@ class ImovelList(generics.ListCreateAPIView):
         ]
     )
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+        response = super(ImovelList, self).list(request, *args, **kwargs)
+        if not response.data:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return response
 
 
 class ImovelDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Imovel.objects.all()
+    """
+    Endpoint para recuperar, atualizar e deletar imóveis.
+    """
+    queryset = Imovel.objects.ativos()
     serializer_class = ImovelSerializer

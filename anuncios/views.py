@@ -1,16 +1,20 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.response import Response
 from anuncios.models import Anuncio
 from anuncios.serializers import AnuncioSerializer
 
 
 class AnuncioList(generics.ListCreateAPIView):
+    """
+    Endpoint para listar e criar anúncios.
+    """
     model = Anuncio
     serializer_class = AnuncioSerializer
 
     def get_queryset(self):
-        queryset = Anuncio.objects.all()
+        queryset = Anuncio.objects.ativos()
 
         codigo_imovel = self.request.query_params.get('codigo_imovel')
         nome_plataforma = self.request.query_params.get('nome_plataforma')
@@ -45,9 +49,15 @@ class AnuncioList(generics.ListCreateAPIView):
         ]
     )
     def get(self, request, *args, **kwargs):
-        return super(AnuncioList, self).list(request, *args, **kwargs)
+        response = super(AnuncioList, self).list(request, *args, **kwargs)
+        if not response.data:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return response
 
 
 class AnuncioDetail(generics.RetrieveUpdateAPIView):
-    queryset = Anuncio.objects.all()
+    """
+    Endpoint para recuperar e atualizar anúncios.
+    """
+    queryset = Anuncio.objects.ativos()
     serializer_class = AnuncioSerializer
