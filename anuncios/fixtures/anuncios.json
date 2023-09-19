@@ -1,0 +1,112 @@
+[
+  {
+    "model": "anuncios.anuncio",
+    "pk": 1,
+    "fields": {
+      "imovel_id": 1,
+      "nome_plataforma": "Airbnb",
+      "taxa_plataforma": 5,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  },
+  {
+    "model": "anuncios.anuncio",
+    "pk": 2,
+    "fields": {
+      "imovel_id": 1,
+      "nome_plataforma": "Booking.com",
+      "taxa_plataforma": 7,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  },
+  {
+    "model": "anuncios.anuncio",
+    "pk": 3,
+    "fields": {
+      "imovel_id": 2,
+      "nome_plataforma": "Vrbo",
+      "taxa_plataforma": 6,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  },
+  {
+    "model": "anuncios.anuncio",
+    "pk": 4,
+    "fields": {
+      "imovel_id": 3,
+      "nome_plataforma": "Airbnb",
+      "taxa_plataforma": 5,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  },
+  {
+    "model": "anuncios.anuncio",
+    "pk": 5,
+    "fields": {
+      "imovel_id": 4,
+      "nome_plataforma": "Expedia",
+      "taxa_plataforma": 6.5,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  },
+  {
+    "model": "anuncios.anuncio",
+    "pk": 6,
+    "fields": {
+      "imovel_id": 4,
+      "nome_plataforma": "TripAdvisor",
+      "taxa_plataforma": 5.5,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  },
+  {
+    "model": "anuncios.anuncio",
+    "pk": 7,
+    "fields": {
+      "imovel_id": 4,
+      "nome_plataforma": "Airbnb",
+      "taxa_plataforma": 5,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  },
+  {
+    "model": "anuncios.anuncio",
+    "pk": 8,
+    "fields": {
+      "imovel_id": 5,
+      "nome_plataforma": "Booking.com",
+      "taxa_plataforma": 7,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  },
+  {
+    "model": "anuncios.anuncio",
+    "pk": 9,
+    "fields": {
+      "imovel_id": 6,
+      "nome_plataforma": "Vrbo",
+      "taxa_plataforma": 6,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  },
+  {
+    "model": "anuncios.anuncio",
+    "pk": 10,
+    "fields": {
+      "imovel_id": 7,
+      "nome_plataforma": "Airbnb",
+      "taxa_plataforma": 5,
+      "criado_em": "2023-09-19T06:03:55Z",
+      "atualizado_em": "2023-09-19T06:03:55Z"
+    }
+  }
+]

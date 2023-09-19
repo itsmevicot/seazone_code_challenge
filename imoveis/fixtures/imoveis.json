@@ -1,0 +1,142 @@
+[
+  {
+    "model": "imoveis.imovel",
+    "pk": 1,
+    "fields": {
+      "codigo_imovel": "IMO-000000000001",
+      "limite_hospedes": 3,
+      "quantidade_banheiros": 2,
+      "aceita_animal_estimacao": true,
+      "valor_limpeza": 50,
+      "data_ativacao": "2023-09-01",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  },
+  {
+    "model": "imoveis.imovel",
+    "pk": 2,
+    "fields": {
+      "codigo_imovel": "IMO-000000000002",
+      "limite_hospedes": 5,
+      "quantidade_banheiros": 3,
+      "aceita_animal_estimacao": false,
+      "valor_limpeza": 80,
+      "data_ativacao": "2023-08-25",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  },
+  {
+    "model": "imoveis.imovel",
+    "pk": 3,
+    "fields": {
+      "codigo_imovel": "IMO-000000000003",
+      "limite_hospedes": 2,
+      "quantidade_banheiros": 1,
+      "aceita_animal_estimacao": false,
+      "valor_limpeza": 30,
+      "data_ativacao": "2023-07-20",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  },
+  {
+    "model": "imoveis.imovel",
+    "pk": 4,
+    "fields": {
+      "codigo_imovel": "IMO-000000000004",
+      "limite_hospedes": 4,
+      "quantidade_banheiros": 3,
+      "aceita_animal_estimacao": true,
+      "valor_limpeza": 90,
+      "data_ativacao": "2023-06-15",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  },
+  {
+    "model": "imoveis.imovel",
+    "pk": 5,
+    "fields": {
+      "codigo_imovel": "IMO-000000000005",
+      "limite_hospedes": 4,
+      "quantidade_banheiros": 2,
+      "aceita_animal_estimacao": false,
+      "valor_limpeza": 70,
+      "data_ativacao": "2023-05-10",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  },
+  {
+    "model": "imoveis.imovel",
+    "pk": 6,
+    "fields": {
+      "codigo_imovel": "IMO-000000000006",
+      "limite_hospedes": 2,
+      "quantidade_banheiros": 1,
+      "aceita_animal_estimacao": true,
+      "valor_limpeza": 30,
+      "data_ativacao": "2023-04-05",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  },
+  {
+    "model": "imoveis.imovel",
+    "pk": 7,
+    "fields": {
+      "codigo_imovel": "IMO-000000000007",
+      "limite_hospedes": 6,
+      "quantidade_banheiros": 4,
+      "aceita_animal_estimacao": true,
+      "valor_limpeza": 110,
+      "data_ativacao": "2023-03-01",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  },
+  {
+    "model": "imoveis.imovel",
+    "pk": 8,
+    "fields": {
+      "codigo_imovel": "IMO-000000000008",
+      "limite_hospedes": 4,
+      "quantidade_banheiros": 2,
+      "aceita_animal_estimacao": false,
+      "valor_limpeza": 60,
+      "data_ativacao": "2023-02-20",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  },
+  {
+    "model": "imoveis.imovel",
+    "pk": 9,
+    "fields": {
+      "codigo_imovel": "IMO-000000000009",
+      "limite_hospedes": 5,
+      "quantidade_banheiros": 3,
+      "aceita_animal_estimacao": false,
+      "valor_limpeza": 85,
+      "data_ativacao": "2023-01-15",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  },
+  {
+    "model": "imoveis.imovel",
+    "pk": 10,
+    "fields": {
+      "codigo_imovel": "IMO-000000000010",
+      "limite_hospedes": 2,
+      "quantidade_banheiros": 1,
+      "aceita_animal_estimacao": true,
+      "valor_limpeza": 35,
+      "data_ativacao": "2022-12-10",
+      "criado_em": "2023-09-19T06:02:33Z",
+      "atualizado_em": "2023-09-19T06:02:33Z"
+    }
+  }
+]

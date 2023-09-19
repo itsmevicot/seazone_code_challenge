@@ -1,0 +1,152 @@
+[
+  {
+    "model": "reservas.reserva",
+    "pk": 1,
+    "fields": {
+      "codigo_reserva": "RES-000000000001",
+      "anuncio_id": 1,
+      "data_checkin": "2023-09-20",
+      "data_checkout": "2023-09-25",
+      "preco_total": 750,
+      "comentario": "Excelente estadia!",
+      "numero_hospedes": 2,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  },
+  {
+    "model": "reservas.reserva",
+    "pk": 2,
+    "fields": {
+      "codigo_reserva": "RES-000000000002",
+      "anuncio_id": 2,
+      "data_checkin": "2023-10-05",
+      "data_checkout": "2023-10-12",
+      "preco_total": 1750,
+      "comentario": "Adoramos a casa na praia!",
+      "numero_hospedes": 4,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  },
+  {
+    "model": "reservas.reserva",
+    "pk": 3,
+    "fields": {
+      "codigo_reserva": "RES-000000000003",
+      "anuncio_id": 3,
+      "data_checkin": "2023-09-28",
+      "data_checkout": "2023-10-03",
+      "preco_total": 1000,
+      "comentario": "O loft \u00c3\u00a9 muito estiloso.",
+      "numero_hospedes": 1,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  },
+  {
+    "model": "reservas.reserva",
+    "pk": 4,
+    "fields": {
+      "codigo_reserva": "RES-000000000004",
+      "anuncio_id": 4,
+      "data_checkin": "2023-12-20",
+      "data_checkout": "2023-12-27",
+      "preco_total": 2450,
+      "comentario": "Vista incr\u00c3\u00advel!",
+      "numero_hospedes": 3,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  },
+  {
+    "model": "reservas.reserva",
+    "pk": 5,
+    "fields": {
+      "codigo_reserva": "RES-000000000005",
+      "anuncio_id": 5,
+      "data_checkin": "2023-11-01",
+      "data_checkout": "2023-11-04",
+      "preco_total": 540,
+      "comentario": "Perfeito para relaxar.",
+      "numero_hospedes": 2,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  },
+  {
+    "model": "reservas.reserva",
+    "pk": 6,
+    "fields": {
+      "codigo_reserva": "RES-000000000006",
+      "anuncio_id": 6,
+      "data_checkin": "2023-10-10",
+      "data_checkout": "2023-10-15",
+      "preco_total": 600,
+      "comentario": "\u00c3\u201ctima localiza\u00c3\u00a7\u00c3\u00a3o.",
+      "numero_hospedes": 1,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  },
+  {
+    "model": "reservas.reserva",
+    "pk": 7,
+    "fields": {
+      "codigo_reserva": "RES-000000000007",
+      "anuncio_id": 7,
+      "data_checkin": "2023-12-15",
+      "data_checkout": "2023-12-22",
+      "preco_total": 3150,
+      "comentario": "Experi\u00c3\u00aancia \u00c3\u00banica!",
+      "numero_hospedes": 5,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  },
+  {
+    "model": "reservas.reserva",
+    "pk": 8,
+    "fields": {
+      "codigo_reserva": "RES-000000000008",
+      "anuncio_id": 8,
+      "data_checkin": "2023-09-30",
+      "data_checkout": "2023-10-05",
+      "preco_total": 1050,
+      "comentario": "Paz e tranquilidade no campo.",
+      "numero_hospedes": 3,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  },
+  {
+    "model": "reservas.reserva",
+    "pk": 9,
+    "fields": {
+      "codigo_reserva": "RES-000000000009",
+      "anuncio_id": 9,
+      "data_checkin": "2023-11-10",
+      "data_checkout": "2023-11-13",
+      "preco_total": 900,
+      "comentario": "Fim de semana perfeito!",
+      "numero_hospedes": 4,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  },
+  {
+    "model": "reservas.reserva",
+    "pk": 10,
+    "fields": {
+      "codigo_reserva": "RES-000000000010",
+      "anuncio_id": 10,
+      "data_checkin": "2023-10-20",
+      "data_checkout": "2023-10-23",
+      "preco_total": 480,
+      "comentario": "Muito conveniente!",
+      "numero_hospedes": 1,
+      "criado_em": "2023-09-19T06:03:19Z",
+      "atualizado_em": "2023-09-19T06:03:19Z"
+    }
+  }
+]
