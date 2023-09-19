@@ -1,5 +1,3 @@
-import decimal
-from datetime import date
 from rest_framework import serializers
 from imoveis.models import Imovel
 
@@ -20,25 +18,34 @@ class SimNaoSerializer(serializers.BooleanField):
 class ImovelSerializer(serializers.ModelSerializer):
     aceita_animal_estimacao = SimNaoSerializer()
 
-    def validate_limite_hospedes(self, limite_hospedes: int):
-        if limite_hospedes < 1:
-            raise serializers.ValidationError({
-                'limite_hospedes': 'O limite de hóspedes deve ser maior ou igual a 1.'})
-        return limite_hospedes
-
-    def validate_valor_limpeza(self, valor_limpeza: decimal):
-        if valor_limpeza < 0:
-            raise serializers.ValidationError({
-                'valor_limpeza': 'O valor de limpeza deve ser maior ou igual a 0.'})
-        return valor_limpeza
-
-    def validate_data_ativacao(self, data_ativacao: date):
-        if data_ativacao < date.today():
-            raise serializers.ValidationError({
-                'data_ativacao': 'A data de ativação deve ser maior ou igual a data atual.'
-            })
-        return data_ativacao
-
     class Meta:
         model = Imovel
         fields = '__all__'
+
+
+class ImovelQuerySerializer(serializers.Serializer):
+    limite_hospedes = serializers.IntegerField(
+        min_value=1,
+        required=False,
+        error_messages={
+            'min_value': 'O limite de hóspedes deve ser maior ou igual a 1.'
+        }
+    )
+    quantidade_banheiros = serializers.IntegerField(
+        min_value=0,
+        required=False,
+        error_messages={
+            'min_value': 'A quantidade de banheiros deve ser maior ou igual a 0.'
+        }
+    )
+    aceita_animal_estimacao = serializers.CharField(required=False, default=None)
+    valor_limpeza = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        min_value=0,
+        required=False,
+        error_messages={
+            'min_value': 'O valor da limpeza deve ser maior ou igual a 0.'
+        }
+    )
+    data_ativacao = serializers.DateField(input_formats=['%d/%m/%Y'], required=False)
