@@ -1,14 +1,14 @@
 # Seazone API
 
 ## Descrição
-Projeto desenvolvido para o desafio técnico da Seazone. Você pode visualizar o Diagrama Entidade-Relacionamento (DER) [aqui](der.png). 
+Projeto desenvolvido para o [desafio técnico da Seazone](descricao_projeto.pdf). Você pode visualizar o Diagrama Entidade-Relacionamento (DER) [aqui](der.png). 
 A API desenvolvida é capaz de realizar as seguintes operações:
 
 ### Imóveis
 #### - Criação de imóveis
 #### - Listagem de imóveis (com filtros)
 #### - Busca de imóveis por ID
-#### - Deleção de imóveis
+#### - Deleção lógica de imóveis
 #### - Update de imóveis (parcial ou completo)
 
 ### Anúncios
@@ -21,7 +21,7 @@ A API desenvolvida é capaz de realizar as seguintes operações:
 #### - Criação de reservas
 #### - Listagem de reservas (com filtros)
 #### - Busca de reservas por ID
-#### - Deleção de reservas
+#### - Deleção lógica de reservas
 
 
 ## Configuração do projeto
@@ -55,25 +55,15 @@ A API desenvolvida é capaz de realizar as seguintes operações:
 Com o banco configurado, aplique as migrações do projeto:
 > python manage.py migrate
 
-Note que há fixtures de testes que serão carregadas automaticamente. Para desativá-las, desabilite a migration [0003_auto_20230917_0150](base/migrations/0003_auto_20230917_0150.py) antes de executar o migrate.
-
 Para iniciar o projeto, utilize o seguinte comando:
 > python manage.py runserver
 
-A documentação, gerada via [Swagger](https://swagger.io/), está disponível em:
+A documentação gerada via [Swagger](https://swagger.io/) está disponível em:
 > http://localhost:8000
 
-### Importações
-Cada entidade (Imóveis, Anúncios e Reservas) possui comandos específicos de importação de dados via fixture (arquivo .csv). Para realizar essa ação, utilize:
-> python manage.py importar_<nome_do_app>
-
-Essa ação é opcional e só é necessária caso você altere alguma das fixtures existentes ou se você optou por comentar a migration de importação dos dados de teste e queira importá-los manualmente.
-
-
-Exemplo:
-> python manage.py importar_imoveis
-
-ATENÇÃO: Garanta que os registros dependentes, como imóveis, sejam importados antes dos registros relacionados, como anúncios, para evitar problemas de integridade.
+### Dados de teste
+É possível carregar dados de teste para alimentar o banco de dados com fixtures .json. Para isso, um comando que importa os dados de teste foi criado. Para executá-lo, utilize:
+> python manage.py importar_dados_teste
 
 ### Docker
 O projeto inclui um docker-compose.yml, tornando mais prática a inicialização do banco de dados. Para rodar via Docker, utilize:
@@ -108,7 +98,7 @@ São feitos testes unitários utilizando a biblioteca de testes do Django REST F
 * Teste do intervalo de datas (check-in e check-out)
 * Teste para saber se o método de update está como não permitido
 
-Para executar os testes de forma individual (Imoveis, Anuncios ou Reservas), basta utilizar o seguinte comando:
+Para executar os testes de forma individual (Imóveis, Anúncios ou Reservas), basta utilizar o seguinte comando:
 > python manage.py test <nome_do_app>
 
 Exemplo:
@@ -116,3 +106,11 @@ Exemplo:
 
 Para executar todos os testes, utilize:
 > python manage.py test
+
+
+### Sugestões de melhorias para implementações futuras
+* Implementar autenticação com token JWT.
+* Implementar Celery e Redis para:
+  - Enviar e-mails de confirmação/cancelamento das entidades. EX: confirmação de reserva.
+  - Atualizar automaticamente o status das entidades. EX: reserva com status "ativo" que já passou da data de check-out.
+  - Permitir planejar a ativação de um imóvel em data futura. EX: um imóvel que será ativado em 01/01/2025.
