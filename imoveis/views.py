@@ -1,12 +1,8 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics, status
-from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
-
+from rest_framework import generics
 from .models import Imovel
-from .serializers import ImovelSerializer
-from datetime import datetime
+from .serializers import ImovelSerializer, ImovelQuerySerializer
 
 
 class ImovelList(generics.ListCreateAPIView):
@@ -19,30 +15,28 @@ class ImovelList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Imovel.objects.ativos()
 
-        limite_hospedes = self.request.query_params.get('limite_hospedes')
-        quantidade_banheiros = self.request.query_params.get('quantidade_banheiros')
-        aceita_animal_estimacao = self.request.query_params.get('aceita_animal_estimacao')
-        valor_limpeza = self.request.query_params.get('valor_limpeza')
-        data_ativacao = self.request.query_params.get('data_ativacao')
+        query_serializer = ImovelQuerySerializer(data=self.request.query_params)
+        query_serializer.is_valid(raise_exception=True)
+        validated_data = query_serializer.validated_data
 
-        if limite_hospedes:
-            queryset = queryset.filter(limite_hospedes__gte=limite_hospedes).order_by('limite_hospedes')
+        if 'limite_hospedes' in validated_data:
+            queryset = queryset.filter(limite_hospedes__gte=validated_data['limite_hospedes']).order_by('limite_hospedes')
 
-        if quantidade_banheiros:
-            queryset = queryset.filter(quantidade_banheiros__gte=quantidade_banheiros).order_by('quantidade_banheiros')
+        if 'quantidade_banheiros' in validated_data:
+            queryset = queryset.filter(quantidade_banheiros__gte=validated_data['quantidade_banheiros']).order_by('quantidade_banheiros')
 
-        if aceita_animal_estimacao:
-            queryset = queryset.filter(aceita_animal_estimacao=aceita_animal_estimacao.lower() in ['true', '1'])
+        aceita_animal = validated_data.get('aceita_animal_estimacao')
+        if aceita_animal:
+            if aceita_animal.lower() in ['true', '1']:
+                queryset = queryset.filter(aceita_animal_estimacao=True)
+            elif aceita_animal.lower() in ['false', '0']:
+                queryset = queryset.filter(aceita_animal_estimacao=False)
 
-        if valor_limpeza:
-            queryset = queryset.filter(valor_limpeza__lte=valor_limpeza).order_by('valor_limpeza')
+        if 'valor_limpeza' in validated_data:
+            queryset = queryset.filter(valor_limpeza__lte=validated_data['valor_limpeza']).order_by('valor_limpeza')
 
-        if data_ativacao:
-            try:
-                data_formatada = datetime.strptime(data_ativacao, '%d/%m/%Y').date()
-                queryset = queryset.filter(data_ativacao=data_formatada).order_by('data_ativacao')
-            except ValueError:
-                raise ValidationError('Data de ativação inválida. O formato deve ser DD/MM/YYYY (ex: 12/03/2023)')
+        if 'data_ativacao' in validated_data:
+            queryset = queryset.filter(data_ativacao=validated_data['data_ativacao']).order_by('data_ativacao')
 
         return queryset
 
@@ -74,8 +68,6 @@ class ImovelList(generics.ListCreateAPIView):
     )
     def get(self, request, *args, **kwargs):
         response = super(ImovelList, self).list(request, *args, **kwargs)
-        if not response.data:
-            return Response(status=status.HTTP_204_NO_CONTENT)
         return response
 
 

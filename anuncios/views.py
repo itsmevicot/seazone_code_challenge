@@ -1,9 +1,8 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics, status
-from rest_framework.response import Response
+from rest_framework import generics
 from anuncios.models import Anuncio
-from anuncios.serializers import AnuncioSerializer
+from anuncios.serializers import AnuncioSerializer, AnuncioQuerySerializer
 
 
 class AnuncioList(generics.ListCreateAPIView):
@@ -16,16 +15,17 @@ class AnuncioList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Anuncio.objects.ativos()
 
-        codigo_imovel = self.request.query_params.get('codigo_imovel')
-        nome_plataforma = self.request.query_params.get('nome_plataforma')
-        taxa_plataforma = self.request.query_params.get('taxa_plataforma')
+        query_serializer = AnuncioQuerySerializer(data=self.request.query_params)
+        query_serializer.is_valid(raise_exception=True)
+        validated_data = query_serializer.validated_data
 
-        if codigo_imovel:
-            queryset = queryset.filter(imovel__codigo_imovel=codigo_imovel)
-        if nome_plataforma:
-            queryset = queryset.filter(nome_plataforma__icontains=nome_plataforma)
-        if taxa_plataforma:
-            queryset = queryset.filter(taxa_plataforma__lte=taxa_plataforma)
+
+        if 'codigo_imovel' in validated_data:
+            queryset = queryset.filter(imovel__codigo_imovel=validated_data['codigo_imovel'])
+        if 'nome_plataforma' in validated_data:
+            queryset = queryset.filter(nome_plataforma__icontains=validated_data['nome_plataforma'])
+        if 'taxa_plataforma' in validated_data:
+            queryset = queryset.filter(taxa_plataforma__lte=validated_data['taxa_plataforma'])
 
         return queryset
 
@@ -50,8 +50,6 @@ class AnuncioList(generics.ListCreateAPIView):
     )
     def get(self, request, *args, **kwargs):
         response = super(AnuncioList, self).list(request, *args, **kwargs)
-        if not response.data:
-            return Response(status=status.HTTP_204_NO_CONTENT)
         return response
 
 

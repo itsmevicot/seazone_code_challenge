@@ -6,7 +6,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from reservas.models import Reserva
-from reservas.serializers import ReservaSerializer
+from reservas.serializers import ReservaSerializer, ReservaQuerySerializer
 from datetime import datetime
 
 
@@ -20,55 +20,53 @@ class ReservaList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Reserva.objects.ativos()
 
-        anuncio = self.request.query_params.get('anuncio')
-        data_checkin = self.request.query_params.get('data_checkin')
-        data_checkout = self.request.query_params.get('data_checkout')
-        preco_total = self.request.query_params.get('preco_total')
-        comentario = self.request.query_params.get('comentario')
-        numero_hospedes = self.request.query_params.get('numero_hospedes')
+        query_serializer = ReservaQuerySerializer(data=self.request.query_params)
+        query_serializer.is_valid(raise_exception=True)
+        validated_data = query_serializer.validated_data
 
-        if anuncio:
-            queryset = queryset.filter(anuncio__pk=anuncio)
+        if 'imovel' in validated_data:
+            queryset = queryset.filter(anuncio__imovel__codigo_imovel=validated_data['imovel'])
 
-        data_formatada_checkin = None
-        data_formatada_checkout = None
+        if 'anuncio' in validated_data:
+            queryset = queryset.filter(anuncio=validated_data['anuncio'])
 
-        if data_checkin:
-            try:
-                data_formatada_checkin = datetime.strptime(data_checkin, '%d/%m/%Y').date()
-            except ValueError:
-                raise ValidationError('Data de Check-in inválida. O formato deve ser DD/MM/YYYY (ex: 01/10/2023)')
+        if 'data_checkin' in validated_data and 'data_checkout' in validated_data:
+            data_checkin = validated_data['data_checkin']
+            data_checkout = validated_data['data_checkout']
 
-        if data_checkout:
-            try:
-                data_formatada_checkout = datetime.strptime(data_checkout, '%d/%m/%Y').date()
-            except ValueError:
-                raise ValidationError('Data de Check-out inválida. O formato deve ser DD/MM/YYYY (ex: 10/10/2023)')
+            if data_checkin >= data_checkout:
+                raise ValidationError('A data de Check-in não pode ser maior ou igual a data de Check-out.')
 
-        if data_formatada_checkin and data_formatada_checkout:
-            if data_formatada_checkin > data_formatada_checkout:
-                raise ValidationError('A data de Check-in não pode ser maior que a data de Check-out.')
             queryset = queryset.filter(
-                Q(data_checkin__range=(data_formatada_checkin, data_formatada_checkout)) |
-                Q(data_checkout__range=(data_formatada_checkin, data_formatada_checkout)) |
-                Q(data_checkin__lte=data_formatada_checkin, data_checkout__gte=data_formatada_checkout)
+                Q(data_checkin__range=(data_checkin, data_checkout)) |
+                Q(data_checkout__range=(data_checkin, data_checkout)) |
+                Q(data_checkin__lte=data_checkin, data_checkout__gte=data_checkout)
             )
-        elif data_formatada_checkin:
-            queryset = queryset.filter(data_checkin=data_formatada_checkin)
-        elif data_formatada_checkout:
-            queryset = queryset.filter(data_checkout=data_formatada_checkout)
 
-        if preco_total:
-            queryset = queryset.filter(preco_total__lte=preco_total)
-        if comentario:
-            queryset = queryset.filter(comentario__icontains=comentario)
-        if numero_hospedes:
-            queryset = queryset.filter(numero_hospedes__lte=numero_hospedes)
+        elif 'data_checkin' in validated_data:
+            queryset = queryset.filter(data_checkin=validated_data['data_checkin'])
+
+        elif 'data_checkout' in validated_data:
+            queryset = queryset.filter(data_checkout=validated_data['data_checkout'])
+
+        if 'preco_total' in validated_data:
+            queryset = queryset.filter(preco_total__lte=validated_data['preco_total'])
+
+        if 'comentario' in validated_data:
+            queryset = queryset.filter(comentario__icontains=validated_data['comentario'])
+
+        if 'numero_hospedes' in validated_data:
+            queryset = queryset.filter(numero_hospedes__lte=validated_data['numero_hospedes'])
 
         return queryset
 
     @swagger_auto_schema(
         manual_parameters=[
+            openapi.Parameter('imovel', openapi.IN_QUERY,
+                              description="Filtro pelo código do imóvel.",
+                              type=openapi.TYPE_STRING,
+                              required=False,
+                              example='IMO-O8EQOO73ROF1'),
             openapi.Parameter('anuncio', openapi.IN_QUERY,
                               description="Filtro pelo código do anúncio.",
                               type=openapi.TYPE_STRING,
@@ -103,8 +101,6 @@ class ReservaList(generics.ListCreateAPIView):
     )
     def get(self, request, *args, **kwargs):
         response = super(ReservaList, self).list(request, *args, **kwargs)
-        if not response.data:
-            return Response(status=status.HTTP_204_NO_CONTENT)
         return response
 
 
