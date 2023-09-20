@@ -71,32 +71,30 @@ O projeto inclui um docker-compose.yml, tornando mais prática a inicialização
 
 Certifique-se de que o arquivo .env esteja configurado corretamente antes de iniciar o container, pois ele informará ao docker-compose as variáveis a serem utilizadas.
 
-### Testes
+## Testes
 São feitos testes unitários utilizando a biblioteca de testes do Django REST Framework. Cada entidade tem seus respectivos testes:
 
-#### Imóveis
-* Teste de criação
-* Teste de listagem
-* Teste de busca por ID
-* Teste de update
-* Teste de deleção
+### Imóveis
+- **Criação:** Verifica se um novo imóvel pode ser adicionado corretamente.
+- **Listagem:** Assegura que todos os imóveis são listados adequadamente.
+- **Busca por ID:** Verifica se um imóvel específico pode ser obtido pelo ID.
+- **Update:** Testa se as informações de um imóvel podem ser atualizadas.
+- **Deleção:** Confirma se um imóvel pode ser removido do sistema.
 
+### Anúncios
+- **Criação:** Checa a adição de um novo anúncio.
+- **Listagem (com filtros):** Testa a listagem de anúncios, permitindo o uso de filtros específicos.
+- **Busca por ID:** Garante a busca por um anúncio específico através do seu ID.
+- **Update:** Avalia a atualização das informações de um anúncio.
+- **Deleção:** Certifica-se de que o método de deleção está configurado como não permitido.
 
-#### Anúncios
-* Teste de criação
-* Teste de listagem (com filtros)
-* Teste de busca por ID
-* Teste de update
-* Teste para saber se o método de deleção está como não permitido
-
-
-#### Reservas
-* Teste de criação
-* Teste de listagem
-* Teste de busca por ID
-* Teste de deleção
-* Teste do intervalo de datas (check-in e check-out)
-* Teste para saber se o método de update está como não permitido
+### Reservas
+- **Criação:** Valida a adição de uma nova reserva.
+- **Listagem:** Garante que todas as reservas são listadas corretamente.
+- **Busca por ID:** Confirma a busca de uma reserva específica pelo seu ID.
+- **Deleção:** Verifica se uma reserva pode ser removida.
+- **Intervalo de datas:** Assegura que o check-in e o check-out estão sendo tratados corretamente.
+- **Update:** Certifica-se de que o método de update está configurado como não permitido.
 
 Para executar os testes de forma individual (Imóveis, Anúncios ou Reservas), basta utilizar o seguinte comando:
 > python manage.py test <nome_do_app>
