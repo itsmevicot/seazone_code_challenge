@@ -36,7 +36,7 @@ class AnuncioViewTestCase(APITestCase):
     def teste_listagem_com_filtro_anuncios(self):
         response = self.client.get(reverse('anuncios:anuncios-list'), data={'nome_plataforma': 'Airbnb'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data['count'], 1)
 
     def teste_pegar_anuncio_pelo_id(self):
         response = self.client.get(reverse('anuncios:anuncios-detail', args=[self.anuncio.id]))

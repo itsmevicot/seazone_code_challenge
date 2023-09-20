@@ -33,9 +33,9 @@ class ReservaViewTestCase(APITestCase):
 
         self.valid_payload = {
             'anuncio': self.anuncio.pk,
-            'data_checkin': (date.today() + timedelta(days=6)).strftime('%Y-%m-%d'),
-            'data_checkout': (date.today() + timedelta(days=10)).strftime('%Y-%m-%d'),
-            'preco_total': 600.0,
+            'data_checkin': "10/01/2024",
+            'data_checkout': "20/01/2024",
+            'preco_total': 2105.37,
             'comentario': "Espaçoso, aconchegante e bem localizado. Nota 10, recomendo!",
             'numero_hospedes': 4
         }
@@ -48,11 +48,11 @@ class ReservaViewTestCase(APITestCase):
     def teste_listar_reservas(self):
         response = self.client.get(reverse('reservas:reservas-list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data['count'], 1)
 
     def teste_pegar_reserva_pelo_id(self):
         response = self.client.get(reverse('reservas:reservas-detail', args=[self.reserva.pk]))
-        reserva = Reserva.objects.get(codigo_reserva=self.reserva.codigo_reserva)
+        reserva = Reserva.objects.get(pk=self.reserva.pk)
         serializer = ReservaSerializer(reserva)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -67,21 +67,21 @@ class ReservaViewTestCase(APITestCase):
             'data_checkout': self.reserva.data_checkout.strftime('%d/%m/%Y')
         })
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data['count'], 1)
 
     def teste_tentativa_atualizacao_metodo_nao_permitido(self):
         update_payload = {
             'comentario': "Atualizando o comentário da reserva."
         }
-        response = self.client.patch(reverse('reservas:reservas-detail', args=[self.reserva.codigo_reserva]),
+        response = self.client.patch(reverse('reservas:reservas-detail', args=[self.reserva.pk]),
                                      data=update_payload)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def teste_reserva_sobreposta(self):
         reserva_data = {
             "anuncio": self.anuncio.id,
-            "data_checkin": "2023-09-18",
-            "data_checkout": "2023-09-25",
+            "data_checkin": "18/09/2023",
+            "data_checkout": "25/09/2023",
             "preco_total": "300.00",
             "comentario": "Barato!",
             "numero_hospedes": 1,
@@ -91,8 +91,8 @@ class ReservaViewTestCase(APITestCase):
 
         reserva_sobreposta_data = {
             "anuncio": self.anuncio.id,
-            "data_checkin": "2023-09-20",
-            "data_checkout": "2023-09-22",
+            "data_checkin": "20/09/2023",
+            "data_checkout": "22/09/2023",
             "preco_total": "200.00",
             "comentario": "Incrível!",
             "numero_hospedes": 1,
@@ -102,3 +102,39 @@ class ReservaViewTestCase(APITestCase):
         self.assertEqual(response_sobreposta.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('data_checkin', response_sobreposta.data)
         self.assertIn('data_checkout', response_sobreposta.data)
+
+    def teste_data_checkin_igual_data_checkout(self):
+        payload = self.valid_payload.copy()
+        payload['data_checkin'] = "10/10/2023"
+        payload['data_checkout'] = "10/10/2023"
+        response = self.client.post(reverse('reservas:reservas-list'), data=payload)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('data_checkin', response.data)
+        self.assertIn('data_checkout', response.data)
+
+    def teste_data_checkin_posterior_data_checkout(self):
+        payload = self.valid_payload.copy()
+        payload['data_checkin'] = "15/10/2023"
+        payload['data_checkout'] = "08/10/2023"
+        response = self.client.post(reverse('reservas:reservas-list'), data=payload)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('data_checkin', response.data)
+
+    def teste_numero_hospedes_invalido(self):
+        payload = self.valid_payload.copy()
+        payload['numero_hospedes'] = 0
+        response = self.client.post(reverse('reservas:reservas-list'), data=payload)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('numero_hospedes', response.data)
+
+        payload['numero_hospedes'] = self.imovel.limite_hospedes + 1
+        response = self.client.post(reverse('reservas:reservas-list'), data=payload)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('numero_hospedes', response.data)
+
+    def teste_preco_total_invalido(self):
+        payload = self.valid_payload.copy()
+        payload['preco_total'] = -10.0
+        response = self.client.post(reverse('reservas:reservas-list'), data=payload)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('preco_total', response.data)
