@@ -2,7 +2,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics
 from .models import Imovel
-from .serializers import ImovelSerializer, ImovelQuerySerializer
+from .serializers import ImovelSerializer
 
 
 class ImovelList(generics.ListCreateAPIView):
@@ -14,28 +14,23 @@ class ImovelList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Imovel.objects.ativos()
-
-        query_serializer = ImovelQuerySerializer(data=self.request.query_params)
+        query_serializer = ImovelSerializer(data=self.request.query_params)
         query_serializer.is_valid(raise_exception=True)
         validated_data = query_serializer.validated_data
 
-        if 'limite_hospedes' in validated_data:
+        if validated_data.get('limite_hospedes'):
             queryset = queryset.filter(limite_hospedes__gte=validated_data['limite_hospedes']).order_by('limite_hospedes')
 
-        if 'quantidade_banheiros' in validated_data:
+        if validated_data.get('quantidade_banheiros'):
             queryset = queryset.filter(quantidade_banheiros__gte=validated_data['quantidade_banheiros']).order_by('quantidade_banheiros')
 
-        aceita_animal = validated_data.get('aceita_animal_estimacao')
-        if aceita_animal:
-            if aceita_animal.lower() in ['true', '1']:
-                queryset = queryset.filter(aceita_animal_estimacao=True)
-            elif aceita_animal.lower() in ['false', '0']:
-                queryset = queryset.filter(aceita_animal_estimacao=False)
+        if validated_data.get('aceita_animal_estimacao') is not None:
+            queryset = queryset.filter(aceita_animal_estimacao=validated_data['aceita_animal_estimacao']).order_by('aceita_animal_estimacao')
 
-        if 'valor_limpeza' in validated_data:
+        if validated_data.get('valor_limpeza'):
             queryset = queryset.filter(valor_limpeza__lte=validated_data['valor_limpeza']).order_by('valor_limpeza')
 
-        if 'data_ativacao' in validated_data:
+        if validated_data.get('data_ativacao'):
             queryset = queryset.filter(data_ativacao=validated_data['data_ativacao']).order_by('data_ativacao')
 
         return queryset

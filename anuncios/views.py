@@ -19,19 +19,18 @@ class AnuncioList(generics.ListCreateAPIView):
         query_serializer.is_valid(raise_exception=True)
         validated_data = query_serializer.validated_data
 
-
-        if 'codigo_imovel' in validated_data:
-            queryset = queryset.filter(imovel__codigo_imovel=validated_data['codigo_imovel'])
-        if 'nome_plataforma' in validated_data:
+        if validated_data.get('imovel'):
+            queryset = queryset.filter(imovel__codigo_imovel=validated_data['imovel'])
+        if validated_data.get('nome_plataforma'):
             queryset = queryset.filter(nome_plataforma__icontains=validated_data['nome_plataforma'])
-        if 'taxa_plataforma' in validated_data:
+        if validated_data.get('taxa_plataforma'):
             queryset = queryset.filter(taxa_plataforma__lte=validated_data['taxa_plataforma'])
 
         return queryset
 
     @swagger_auto_schema(
         manual_parameters=[
-            openapi.Parameter('codigo_imovel', openapi.IN_QUERY,
+            openapi.Parameter('imovel', openapi.IN_QUERY,
                                 description="Código do imóvel.",
                                 type=openapi.TYPE_STRING,
                                 required=False,

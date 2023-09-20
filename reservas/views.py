@@ -1,13 +1,10 @@
 from django.db.models import Q
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics, status
+from rest_framework import generics
 from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
-
 from reservas.models import Reserva
 from reservas.serializers import ReservaSerializer, ReservaQuerySerializer
-from datetime import datetime
 
 
 class ReservaList(generics.ListCreateAPIView):
@@ -24,13 +21,13 @@ class ReservaList(generics.ListCreateAPIView):
         query_serializer.is_valid(raise_exception=True)
         validated_data = query_serializer.validated_data
 
-        if 'imovel' in validated_data:
+        if validated_data.get('imovel'):
             queryset = queryset.filter(anuncio__imovel__codigo_imovel=validated_data['imovel'])
 
-        if 'anuncio' in validated_data:
+        if validated_data.get('anuncio'):
             queryset = queryset.filter(anuncio=validated_data['anuncio'])
 
-        if 'data_checkin' in validated_data and 'data_checkout' in validated_data:
+        if validated_data.get('data_checkin') and validated_data.get('data_checkout'):
             data_checkin = validated_data['data_checkin']
             data_checkout = validated_data['data_checkout']
 
@@ -43,25 +40,33 @@ class ReservaList(generics.ListCreateAPIView):
                 Q(data_checkin__lte=data_checkin, data_checkout__gte=data_checkout)
             )
 
-        elif 'data_checkin' in validated_data:
+        elif validated_data.get('data_checkin'):
             queryset = queryset.filter(data_checkin=validated_data['data_checkin'])
 
-        elif 'data_checkout' in validated_data:
+        elif validated_data.get('data_checkout'):
             queryset = queryset.filter(data_checkout=validated_data['data_checkout'])
 
-        if 'preco_total' in validated_data:
+        if validated_data.get('preco_total'):
             queryset = queryset.filter(preco_total__lte=validated_data['preco_total'])
 
-        if 'comentario' in validated_data:
+        if validated_data.get('comentario'):
             queryset = queryset.filter(comentario__icontains=validated_data['comentario'])
 
-        if 'numero_hospedes' in validated_data:
+        if validated_data.get('numero_hospedes'):
             queryset = queryset.filter(numero_hospedes__lte=validated_data['numero_hospedes'])
+
+        if validated_data.get('codigo_reserva'):
+            queryset = queryset.filter(codigo_reserva=validated_data['codigo_reserva'])
 
         return queryset
 
     @swagger_auto_schema(
         manual_parameters=[
+            openapi.Parameter('codigo_reserva', openapi.IN_QUERY,
+                              description="Filtro pelo código da reserva.",
+                              type=openapi.TYPE_STRING,
+                              required=False,
+                              example='RES-8EQOO73ROF1'),
             openapi.Parameter('imovel', openapi.IN_QUERY,
                               description="Filtro pelo código do imóvel.",
                               type=openapi.TYPE_STRING,
