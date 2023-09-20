@@ -18,6 +18,7 @@ class ReservaSerializer(serializers.ModelSerializer):
         min_value=1,
         error_messages={'min_value': 'O número de hóspedes deve ser maior ou igual a 1.'}
     )
+
     def validate(self, data):
         data_checkin = data.get('data_checkin')
         data_checkout = data.get('data_checkout')
@@ -26,7 +27,10 @@ class ReservaSerializer(serializers.ModelSerializer):
         imovel = data.get('anuncio').imovel
 
         if data_checkin >= data_checkout:
-            raise serializers.ValidationError('A data de Check-in não pode ser maior ou igual a data de Check-out.')
+            raise serializers.ValidationError({
+                'data_checkin': 'A data de Check-in não pode ser maior ou igual a data de Check-out.',
+                'data_checkout': 'A data de Check-out não pode ser menor ou igual a data de Check-in.'
+            })
 
         if numero_hospedes > imovel.limite_hospedes:
             raise serializers.ValidationError({
@@ -41,7 +45,8 @@ class ReservaSerializer(serializers.ModelSerializer):
 
         if reservas_sobrepostas.exists():
             raise serializers.ValidationError({
-               'data_checkin/data_checkout': 'Já existe uma reserva para essas datas neste imóvel.'
+                'data_checkin': 'Já existe uma reserva para essas datas neste imóvel.',
+                'data_checkout': 'Já existe uma reserva para essas datas neste imóvel.'
             })
 
         return data
