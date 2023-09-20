@@ -8,7 +8,7 @@ class Reserva(BaseModel):
     anuncio = models.ForeignKey('anuncios.Anuncio', on_delete=models.PROTECT, related_name='reservas')
     data_checkin = models.DateField()
     data_checkout = models.DateField()
-    preco_total = models.DecimalField(decimal_places=2, max_digits=10)
+    preco_total = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     comentario = models.CharField(max_length=255)
     numero_hospedes = models.PositiveIntegerField(default=1)
 

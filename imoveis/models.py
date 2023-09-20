@@ -8,7 +8,7 @@ class Imovel(BaseModel):
     limite_hospedes = models.PositiveIntegerField(default=1)
     quantidade_banheiros = models.PositiveIntegerField(default=0)
     aceita_animal_estimacao = models.BooleanField(default=False)
-    valor_limpeza = models.DecimalField(decimal_places=2, max_digits=10)
+    valor_limpeza = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     data_ativacao = models.DateField()
 
     def __str__(self):

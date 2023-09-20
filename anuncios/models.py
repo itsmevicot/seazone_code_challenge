@@ -5,7 +5,7 @@ from django.db import models
 class Anuncio(BaseModel):
     imovel = models.ForeignKey('imoveis.Imovel', on_delete=models.PROTECT, related_name='anuncios')
     nome_plataforma = models.CharField(max_length=50)
-    taxa_plataforma = models.DecimalField(decimal_places=2, max_digits=10)
+    taxa_plataforma = models.DecimalField(decimal_places=2, max_digits=10, default=0)
 
     @property
     def descricao(self):
