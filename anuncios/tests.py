@@ -50,6 +50,6 @@ class AnuncioViewTestCase(APITestCase):
                                    data=self.valid_payload)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def teste_deletar_anuncio(self):
+    def teste_delecao_anuncio_metodo_nao_permitido(self):
         response = self.client.delete(reverse('anuncios:anuncios-detail', args=[self.anuncio.id]))
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
