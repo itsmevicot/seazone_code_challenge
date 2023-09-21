@@ -34,8 +34,8 @@ class ReservaList(generics.ListCreateAPIView):
         query_serializer.is_valid(raise_exception=True)
         validated_data = query_serializer.validated_data
 
-        if validated_data.get('imovel'):
-            queryset = queryset.filter(anuncio__imovel__codigo_imovel=validated_data['imovel'])
+        if validated_data.get('codigo_imovel'):
+            queryset = queryset.filter(anuncio__imovel__codigo_imovel=validated_data['codigo_imovel'])
 
         if validated_data.get('anuncio'):
             queryset = queryset.filter(anuncio=validated_data['anuncio'])
@@ -80,13 +80,13 @@ class ReservaList(generics.ListCreateAPIView):
                               type=openapi.TYPE_STRING,
                               required=False,
                               example='RES-8EQOO73ROF1'),
-            openapi.Parameter('imovel', openapi.IN_QUERY,
+            openapi.Parameter('codigo_imovel', openapi.IN_QUERY,
                               description="Filtro pelo código do imóvel.",
                               type=openapi.TYPE_STRING,
                               required=False,
                               example='IMO-O8EQOO73ROF1'),
             openapi.Parameter('anuncio', openapi.IN_QUERY,
-                              description="Filtro pelo código do anúncio.",
+                              description="Filtro pela pk do anúncio.",
                               type=openapi.TYPE_STRING,
                               required=False),
             openapi.Parameter('data_checkin', openapi.IN_QUERY,

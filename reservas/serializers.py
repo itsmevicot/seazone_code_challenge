@@ -59,7 +59,7 @@ class ReservaSerializer(serializers.ModelSerializer):
 class ReservaQuerySerializer(serializers.Serializer):
     codigo_reserva = serializers.CharField(required=False)
     anuncio = serializers.PrimaryKeyRelatedField(queryset=Anuncio.objects.ativos(), required=False)
-    imovel = serializers.CharField(required=False)
+    codigo_imovel = serializers.CharField(required=False)
     data_checkin = serializers.DateField(input_formats=['%d/%m/%Y'], required=False)
     data_checkout = serializers.DateField(input_formats=['%d/%m/%Y'], required=False)
     preco_total = serializers.DecimalField(
