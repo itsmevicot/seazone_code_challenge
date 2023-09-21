@@ -3,6 +3,7 @@ from imoveis.models import Imovel
 
 
 class ImovelSerializer(serializers.ModelSerializer):
+    codigo_imovel = serializers.CharField(required=False)
     limite_hospedes = serializers.IntegerField(
         min_value=1,
         required=False,

@@ -30,6 +30,9 @@ class ImovelList(generics.ListCreateAPIView):
         query_serializer.is_valid(raise_exception=True)
         validated_data = query_serializer.validated_data
 
+        if validated_data.get('codigo_imovel'):
+            queryset = queryset.filter(codigo_imovel=validated_data['codigo_imovel'])
+
         if validated_data.get('limite_hospedes'):
             queryset = queryset.filter(limite_hospedes__gte=validated_data['limite_hospedes']).order_by('limite_hospedes')
 
@@ -49,6 +52,10 @@ class ImovelList(generics.ListCreateAPIView):
 
     @swagger_auto_schema(
         manual_parameters=[
+            openapi.Parameter('codigo_imovel', openapi.IN_QUERY,
+                              description="Código do imóvel",
+                              type=openapi.TYPE_STRING,
+                              required=False),
             openapi.Parameter('limite_hospedes', openapi.IN_QUERY,
                               description="Limite de hóspedes. Filtra por valores maiores ou iguais ao informado.",
                               type=openapi.TYPE_INTEGER,
