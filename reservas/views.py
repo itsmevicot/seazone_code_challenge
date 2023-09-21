@@ -7,6 +7,19 @@ from reservas.models import Reserva
 from reservas.serializers import ReservaSerializer, ReservaQuerySerializer
 
 
+reserva_request_body = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'data_checkin': openapi.Schema(type=openapi.TYPE_STRING, example="21/01/2024", format="date"),
+        'data_checkout': openapi.Schema(type=openapi.TYPE_STRING, example="03/02/2024", format="date"),
+        'preco_total': openapi.Schema(type=openapi.TYPE_NUMBER, example=0, format=openapi.FORMAT_DECIMAL),
+        'comentario': openapi.Schema(type=openapi.TYPE_STRING, example="Acomodação excelente!"),
+        'numero_hospedes': openapi.Schema(type=openapi.TYPE_INTEGER, example=2),
+        'anuncio': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+    }
+)
+
+
 class ReservaList(generics.ListCreateAPIView):
     """
     Endpoint para listar e criar reservas.
@@ -106,6 +119,13 @@ class ReservaList(generics.ListCreateAPIView):
     )
     def get(self, request, *args, **kwargs):
         response = super(ReservaList, self).list(request, *args, **kwargs)
+        return response
+
+    @swagger_auto_schema(
+        request_body=reserva_request_body,
+    )
+    def post(self, request, *args, **kwargs):
+        response = super(ReservaList, self).create(request, *args, **kwargs)
         return response
 
 

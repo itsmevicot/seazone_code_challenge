@@ -5,6 +5,18 @@ from .models import Imovel
 from .serializers import ImovelSerializer
 
 
+imovel_request_body = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'limite_hospedes': openapi.Schema(type=openapi.TYPE_INTEGER, example=2),
+        'quantidade_banheiros': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+        'aceita_animal_estimacao': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=True),
+        'valor_limpeza': openapi.Schema(type=openapi.TYPE_NUMBER, example=0, format=openapi.FORMAT_DECIMAL),
+        'data_ativacao': openapi.Schema(type=openapi.TYPE_STRING, example="17/08/2023", format="date"),
+    }
+)
+
+
 class ImovelList(generics.ListCreateAPIView):
     """
     Endpoint para listar e criar imóveis.
@@ -52,17 +64,25 @@ class ImovelList(generics.ListCreateAPIView):
             openapi.Parameter('valor_limpeza', openapi.IN_QUERY,
                               description="Valor da limpeza. Filtra por valores menores ou iguais ao informado.",
                               type=openapi.TYPE_NUMBER,
+                              format=openapi.FORMAT_DECIMAL,
                               required=False,
                               example=55.38),
             openapi.Parameter('data_ativacao', openapi.IN_QUERY,
                               description="Data de ativação do imóvel (formato DD/MM/YYYY).",
-                              type=openapi.TYPE_STRING,
+                              type="date",
                               required=False,
                               example="15/06/2023"),
         ]
     )
     def get(self, request, *args, **kwargs):
         response = super(ImovelList, self).list(request, *args, **kwargs)
+        return response
+
+    @swagger_auto_schema(
+        request_body=imovel_request_body
+    )
+    def post(self, request, *args, **kwargs):
+        response = super(ImovelList, self).create(request, *args, **kwargs)
         return response
 
 
@@ -72,3 +92,15 @@ class ImovelDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Imovel.objects.ativos()
     serializer_class = ImovelSerializer
+
+    @swagger_auto_schema(
+        request_body=imovel_request_body
+    )
+    def put(self, request, *args, **kwargs):
+        return super(ImovelDetail, self).update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        request_body=imovel_request_body
+    )
+    def patch(self, request, *args, **kwargs):
+        return super(ImovelDetail, self).partial_update(request, *args, **kwargs)
