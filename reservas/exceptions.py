@@ -20,7 +20,7 @@ class CheckoutEarlierThanCheckinException(SeazoneAPIException):
 class ExceedGuestLimitException(SeazoneAPIException):
     def __init__(self, limite):
         super().__init__(
-            detail=f"O número de hóspedes excede o limite de hóspedes: {limite}",
+            detail=f"O número de hóspedes excede o limite: {limite}",
             codigo="exceed_guest_limit"
         )
 
