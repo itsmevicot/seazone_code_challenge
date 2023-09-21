@@ -2,8 +2,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics
 from .models import Imovel
-from .serializers import ImovelSerializer
-
+from .serializers import ImovelQuerySerializer, ImovelSerializer
 
 imovel_request_body = openapi.Schema(
     type=openapi.TYPE_OBJECT,
@@ -12,7 +11,7 @@ imovel_request_body = openapi.Schema(
         'quantidade_banheiros': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
         'aceita_animal_estimacao': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=True),
         'valor_limpeza': openapi.Schema(type=openapi.TYPE_NUMBER, example=0, format=openapi.FORMAT_DECIMAL),
-        'data_ativacao': openapi.Schema(type=openapi.TYPE_STRING, example="17/08/2023", format="date"),
+        'data_ativacao': openapi.Schema(type=openapi.TYPE_STRING, example="24/03/2024", format="date"),
     }
 )
 
@@ -26,7 +25,7 @@ class ImovelList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Imovel.objects.ativos()
-        query_serializer = ImovelSerializer(data=self.request.query_params)
+        query_serializer = ImovelQuerySerializer(data=self.request.query_params)
         query_serializer.is_valid(raise_exception=True)
         validated_data = query_serializer.validated_data
 
@@ -78,7 +77,7 @@ class ImovelList(generics.ListCreateAPIView):
                               description="Data de ativação do imóvel (formato DD/MM/YYYY).",
                               type="date",
                               required=False,
-                              example="15/06/2023"),
+                              example="15/01/2023"),
         ]
     )
     def get(self, request, *args, **kwargs):
@@ -98,7 +97,7 @@ class ImovelDetail(generics.RetrieveUpdateDestroyAPIView):
     Endpoint para recuperar, atualizar e deletar imóveis.
     """
     queryset = Imovel.objects.ativos()
-    serializer_class = ImovelSerializer
+    serializer_class = ImovelQuerySerializer
 
     @swagger_auto_schema(
         request_body=imovel_request_body

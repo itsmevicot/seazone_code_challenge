@@ -3,7 +3,7 @@ from rest_framework import status
 from django.urls import reverse
 from datetime import date, timedelta
 from .models import Imovel
-from .serializers import ImovelSerializer
+from .serializers import ImovelQuerySerializer
 
 
 class ImovelViewTestCase(APITestCase):
@@ -40,7 +40,7 @@ class ImovelViewTestCase(APITestCase):
     def teste_pegar_imovel_pelo_id(self):
         response = self.client.get(reverse('imoveis:imoveis-detail', args=[self.imovel.pk]))
         imovel = Imovel.objects.get(pk=self.imovel.pk)
-        serializer = ImovelSerializer(imovel)
+        serializer = ImovelQuerySerializer(imovel)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
