@@ -81,6 +81,9 @@ class ReservaQuerySerializer(serializers.Serializer):
         data_checkout = data.get('data_checkout')
 
         if data_checkin and data_checkout and data_checkin >= data_checkout:
-            raise serializers.ValidationError('A data de Check-in não pode ser maior ou igual a data de Check-out.')
+            raise serializers.ValidationError({
+                'data_checkin': 'A data de Check-in não pode ser maior ou igual a data de Check-out.',
+                'data_checkout': 'A data de Check-out não pode ser menor ou igual a data de Check-in.'
+            })
 
         return data

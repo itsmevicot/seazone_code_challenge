@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from imoveis.models import Imovel
+import datetime
 
 
 class ImovelSerializer(serializers.ModelSerializer):
@@ -30,6 +31,17 @@ class ImovelSerializer(serializers.ModelSerializer):
         }
     )
     data_ativacao = serializers.DateField(input_formats=['%d/%m/%Y'], required=False)
+
+    def validate(self, data):
+        data_ativacao = data.get('data_ativacao')
+        data_hoje = datetime.date.today()
+
+        if data_ativacao < data_hoje:
+            raise serializers.ValidationError({
+                'data_ativacao': 'A data de ativação não pode ser menor que a data de hoje.'
+            })
+
+        return data
 
     class Meta:
         model = Imovel
