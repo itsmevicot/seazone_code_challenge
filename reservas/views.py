@@ -2,7 +2,7 @@ from django.db.models import Q
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics
-from rest_framework.exceptions import ValidationError
+from reservas.exceptions import CheckinLaterThanCheckoutException
 from reservas.models import Reserva
 from reservas.serializers import ReservaSerializer, ReservaQuerySerializer
 
@@ -45,7 +45,7 @@ class ReservaList(generics.ListCreateAPIView):
             data_checkout = validated_data['data_checkout']
 
             if data_checkin >= data_checkout:
-                raise ValidationError('A data de Check-in não pode ser maior ou igual a data de Check-out.')
+                raise CheckinLaterThanCheckoutException()
 
             queryset = queryset.filter(
                 Q(data_checkin__range=(data_checkin, data_checkout)) |
@@ -60,13 +60,13 @@ class ReservaList(generics.ListCreateAPIView):
             queryset = queryset.filter(data_checkout=validated_data['data_checkout'])
 
         if validated_data.get('preco_total'):
-            queryset = queryset.filter(preco_total__lte=validated_data['preco_total'])
+            queryset = queryset.filter(preco_total__lte=validated_data['preco_total']).order_by('preco_total')
 
         if validated_data.get('comentario'):
             queryset = queryset.filter(comentario__icontains=validated_data['comentario'])
 
         if validated_data.get('numero_hospedes'):
-            queryset = queryset.filter(numero_hospedes__lte=validated_data['numero_hospedes'])
+            queryset = queryset.filter(numero_hospedes__lte=validated_data['numero_hospedes']).order_by('-numero_hospedes')
 
         if validated_data.get('codigo_reserva'):
             queryset = queryset.filter(codigo_reserva=validated_data['codigo_reserva'])

@@ -1,9 +1,10 @@
 from rest_framework import serializers
+from imoveis.exeptions import PastActivationDateException
 from imoveis.models import Imovel
 import datetime
 
 
-class ImovelSerializer(serializers.ModelSerializer):
+class ImovelQuerySerializer(serializers.ModelSerializer):
     codigo_imovel = serializers.CharField(required=False)
     limite_hospedes = serializers.IntegerField(
         min_value=1,
@@ -32,17 +33,16 @@ class ImovelSerializer(serializers.ModelSerializer):
     )
     data_ativacao = serializers.DateField(input_formats=['%d/%m/%Y'], required=False)
 
-    def validate(self, data):
-        data_ativacao = data.get('data_ativacao')
-        data_hoje = datetime.date.today()
-
-        if data_ativacao and data_ativacao < data_hoje:
-            raise serializers.ValidationError({
-                'data_ativacao': 'A data de ativação não pode ser menor que a data de hoje.'
-            })
-
-        return data
-
     class Meta:
         model = Imovel
         fields = '__all__'
+
+
+class ImovelSerializer(ImovelQuerySerializer):
+    data_ativacao = serializers.DateField(input_formats=['%d/%m/%Y'])
+
+    def validate(self, data):
+        data_ativacao = data.get('data_ativacao')
+        if data_ativacao < datetime.date.today():
+            raise PastActivationDateException()
+        return data

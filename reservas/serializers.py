@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from anuncios.models import Anuncio
+from reservas.exceptions import CheckinLaterThanCheckoutException, ExceedGuestLimitException, OverlappingBookingException
 from reservas.models import Reserva
 
 
@@ -27,15 +28,10 @@ class ReservaSerializer(serializers.ModelSerializer):
         imovel = data.get('anuncio').imovel
 
         if data_checkin >= data_checkout:
-            raise serializers.ValidationError({
-                'data_checkin': 'A data de Check-in não pode ser maior ou igual a data de Check-out.',
-                'data_checkout': 'A data de Check-out não pode ser menor ou igual a data de Check-in.'
-            })
+            raise CheckinLaterThanCheckoutException()
 
         if numero_hospedes > imovel.limite_hospedes:
-            raise serializers.ValidationError({
-                'numero_hospedes': f'O número de hóspedes excede o limite de hóspedes: {imovel.limite_hospedes}'
-            })
+            raise ExceedGuestLimitException(imovel.limite_hospedes)
 
         reservas_sobrepostas = Reserva.objects.ativos(
             anuncio=anuncio.pk,
@@ -44,10 +40,7 @@ class ReservaSerializer(serializers.ModelSerializer):
         )
 
         if reservas_sobrepostas.exists():
-            raise serializers.ValidationError({
-                'data_checkin': 'Já existe uma reserva para essas datas neste imóvel.',
-                'data_checkout': 'Já existe uma reserva para essas datas neste imóvel.'
-            })
+            raise OverlappingBookingException()
 
         return data
 
@@ -81,9 +74,6 @@ class ReservaQuerySerializer(serializers.Serializer):
         data_checkout = data.get('data_checkout')
 
         if data_checkin and data_checkout and data_checkin >= data_checkout:
-            raise serializers.ValidationError({
-                'data_checkin': 'A data de Check-in não pode ser maior ou igual a data de Check-out.',
-                'data_checkout': 'A data de Check-out não pode ser menor ou igual a data de Check-in.'
-            })
+            raise CheckinLaterThanCheckoutException()
 
         return data
