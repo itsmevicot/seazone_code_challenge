@@ -9,14 +9,6 @@ class CheckinLaterThanCheckoutException(SeazoneAPIException):
         )
 
 
-class CheckoutEarlierThanCheckinException(SeazoneAPIException):
-    def __init__(self):
-        super().__init__(
-            detail="A data de Check-out não pode ser menor ou igual a data de Check-in.",
-            codigo="checkout_earlier_than_checkin"
-        )
-
-
 class ExceedGuestLimitException(SeazoneAPIException):
     def __init__(self, limite):
         super().__init__(
